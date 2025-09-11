@@ -1,6 +1,8 @@
 
 // const url = 'http://213.218.234.164:9000/';
-const url = 'https://api.procampos.com.br/';
+//const url = 'https://api.procampos.com.br/';
+//const url = 'http://142.4.193.48:9000/';
+const url = 'https://api.jarb.com.br/';
 const username = '12345';
 const password = '12345';
 const headers = new Headers();// Montar cabeçalho de autenticação
@@ -136,12 +138,11 @@ function baixaJsonInumado(vlCodigo){
            dataNasc = data2.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
            data2    = new Date(data.fales);
            dataFale = data2.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-          
-          document.getElementById('breveHistoria').innerText = data.texto;
-          document.getElementById('nomeFales').innerText = data.nome;
-          document.getElementById('nasci').innerText = '✨ ' +  dataNasc;
-          document.getElementById('fales').innerText = '✝️ ' + dataFale;
-          document.getElementById('historia').innerText = data.obs;
+           document.getElementById('breveHistoria').innerText = data.texto;
+           document.getElementById('nomeFales').innerText = data.nome;
+           document.getElementById('nasci').innerText = '✨ ' +  dataNasc;
+           document.getElementById('fales').innerText = '✝️ ' + dataFale;
+           document.getElementById('historia').innerText = data.obs;
 
 
           // Se a foto vier com o prefixo correto
