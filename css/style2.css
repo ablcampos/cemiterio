@@ -1,3 +1,9 @@
+:root{
+    /*Declaração de variáveis para serem reutilizadas*/
+    --brand:  #b8aeae;
+    --brand-dark:  #8b8787;
+}
+
 h1, h2, h3, h4, h5, h6{ margin: 0;}
 
 p{ 
@@ -5,12 +11,12 @@ p{
 }
 
 
-body {
-    background-color: #f4f4f4;        
-    font-family: Arial, sans-serif;
+body {  
+    background-color: var(--brand);  
     margin: 0;
     padding: 0;
-    text-align: center;       
+    text-align: center;     
+    font-family: "Poppins", sans-serif;
 }
 
 body::before {
@@ -19,9 +25,8 @@ body::before {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    /* background-image: url('../img/fundo.avif'); */
-    background-color: #524f4f;
+    height: 100%;    
+    background-color: var(--brand);  
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,29 +34,62 @@ body::before {
     z-index: -1;
 }
 
-.container2 {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+/* ************************************************************************************ */
+.topo {
+    background-color: #51bedf; /* vermelho */
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 80px;
+    max-width: 150px;
+    object-fit: contain;
 }
 
 .top-image {
-    margin-top: 10px;
+    position: absolute;
+    bottom: -99%; /* 40% para dentro do topo */
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: 5px solid #fff;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease-in-out;
+}
+
+.container2 {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px; 
+    text-align: center;
+}
+
+.container2 p{
+    margin-bottom: 10px;
+}
+
+.container2 #nomeFales{
+    font-weight: bold;
 }
 
 .labels { margin: 20px 0;}
 
-.label {
-    display: inline-block;
-    background-color: #3498db;
-    color: white;
-    padding: 8px 16px;
-    margin: 5px;
-    border-radius: 20px;
+.label {    
+    color: black;   
+    margin: 8px;    
     font-size: 16px;
 }
 
@@ -76,14 +114,6 @@ textarea{
     height: 250px;
 }
 
-.bottom-image {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    margin-bottom: 10px;
-}
-
 .btn{
     border-radius: 5px;
     width: 130px;
@@ -95,18 +125,48 @@ textarea{
 }
 
 
+.footer{
+    background-image: linear-gradient(to right,var(--brand), var(--brand-dark));
+    padding: 20px 0;  
+    color: #ffffff;
+}
+
+.container{
+    width: 100%;
+    max-width: 1164px; /*1140+24 do padding = 1164 */
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box; /* faz com que o padding nao ultrapasse os 100% fique dentro dos 100% pra dentro e nao pra fora */
+    /* onde ocasionaria 124% neste caso fica 76% e os 24px do padding*/
+    /*centraliza o container*/
+    margin-left: auto;
+    margin-right: auto;      
+}
+
+.footer .container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social{
+    display: flex;
+    column-gap: 20px;
+}
 /**************************************************************************************************************************************************/
 /* JANELA MODAL COM OS EDITS 
 /**************************************************************************************************************************************************/
-.foto-galeria {   
-    max-width: 800px;
-    max-height: 800px;     
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    margin-bottom: 10px; 
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+#galeria { 
+    max-width: 900px; 
+    padding: 5px;         
+}
+
+.bxslider img, #galeria img { 
+    width: 100%; 
+    height: 400px; 
+    object-fit: contain; 
+    display:block; 
+    background-color: var(--brand);   
 }
 
 .modalDialog {
@@ -182,6 +242,11 @@ textarea{
 .btn-outline{
     background-color: rgba(0, 89, 255, 0.966);
     color: rgb(255, 255, 253);
+   
+}
+
+#bt-margem {
+    margin-top: 210px;
 }
 
 .btn-outline:hover{
@@ -201,3 +266,84 @@ textarea{
 /************************************************************************************************************************************************/
 /************************************************************************************************************************************************/
 /***********************************************************************************************************************************************/
+ /* RESPONSIVIDADE */
+  @media (max-width: 768px) {
+
+    .topo {
+        height: 150px;
+    }
+    .logo img {
+        height: 60px;
+    }
+    .top-image {
+        width: 200px;
+        height: 200px;
+        bottom: -80%;
+    }
+    .container2 {
+        padding-top: 30px;
+    }
+
+    .bxslider img, #galeria img { 
+        height: 260px; 
+    }   
+    
+    #bt-margem {
+        margin-top: 150px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .topo {
+        height: 170px;
+    }
+
+    .logo {
+        left: 10px;
+    }
+
+    .logo img {
+        height: 60px;
+        max-width: 120px;
+    }
+
+    .top-image {
+        width: 120px;
+        height: 120px;
+        bottom: -30%;
+    }
+    .container2 {
+        padding-top: 30px;
+    }
+
+    .bxslider img, #galeria img { 
+        height: 180px; 
+    }
+
+    #bt-margem {
+        margin-top: 70px;
+    }
+
+} 
+
+
+@media (max-width: 377px) {
+
+    .logo img {
+        margin-bottom: 70px;
+    }
+
+    .container{
+        padding-left: 5px;
+        padding-right: 5px;     
+    }
+    .social{
+        column-gap: 10px;
+    }
+    
+    .footer-text {
+        font-size: 14px;
+    }
+            
+} 

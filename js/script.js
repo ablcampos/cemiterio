@@ -1,11 +1,11 @@
-
-// const url = 'http://213.218.234.164:9000/';
-//const url = 'https://api.procampos.com.br/';
-//const url = 'http://142.4.193.48:9000/';
-const url = 'https://api.jarb.com.br/';
+// ===== CONFIG =====
+const url = 'https://api.jarb.com.br/'; // ajuste se necessário
 const username = '12345';
 const password = '12345';
-const headers = new Headers();// Montar cabeçalho de autenticação
+const headers = new Headers();
+headers.append('Accept', 'application/json');
+
+// variáveis
 const pagina = document.getElementById('quem-somos');
 const pagina1 = document.getElementById('inicial');
 
@@ -99,6 +99,32 @@ async function carregarPessoas(filtro) {
         });      
       }    
 
+
+//************************************************************************************************************************************** */      
+// COMPARTILHAMENTO DA PAGINA *****************************************************************************************************
+//************************************************************************************************************************************** */      
+
+      function share(platform) {
+        const url = encodeURIComponent(window.location.href); // URL atual da página
+        let shareUrl = '';
+    
+        switch(platform) {
+            case 'whatsapp':
+                shareUrl = `https://wa.me/?text=Acessar o endereço    ${url}`;
+                break;
+            case 'instagram':
+                alert('O Instagram não permite compartilhamento direto de links via web.'); 
+                return;
+            case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?url=${url}`;
+                break;
+        }
+    
+        if (shareUrl) {
+            window.open(shareUrl, '_blank');
+        }
+    }
+
 //************************************************************************************************************************************** */      
 // SCRIPT PARA QUEM SOMOS APENAS *****************************************************************************************************
 //************************************************************************************************************************************** */      
@@ -115,119 +141,189 @@ function funcaoInicial() {
           } 
       }
 }
-// ***********************************************************
-// ***********************************************************
-// BAIXA JSOM INUMADO
-// ***********************************************************
-// ***********************************************************   
-function baixaJsonInumado(vlCodigo){
- 
+
+
+
+// instância do bxSlider (global para poder destruir)
+window.bxGalleryInstance = null;
+
+/* ================= UTILITÁRIOS ================= */
+function capitalizarPrimeiraLetra(texto) {
+  return texto ? texto.charAt(0).toUpperCase() + texto.slice(1) : '';
+}
+
+function formatarData(dataStr) {
+  if (!dataStr) return '';
+  const d = new Date(dataStr);
+  if (isNaN(d)) return '';
+  return capitalizarPrimeiraLetra(d.toLocaleDateString('pt-BR', {
+    timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric'
+  }));
+}
+
+/* ====== FUNÇÃO: cria galeria e inicializa bxSlider ====== */
+function criarGaleriaComBxSlider(imagens) {
+  const galeriaDiv = document.getElementById('galeria');
+  galeriaDiv.innerHTML = '';
+
+  // destrói instância anterior se existir
+  if (window.bxGalleryInstance && typeof window.bxGalleryInstance.destroySlider === 'function') {
+    try { window.bxGalleryInstance.destroySlider(); } catch (e) { /* ignore */ }
+    window.bxGalleryInstance = null;
+  }
+
+  if (!imagens || !Array.isArray(imagens) || imagens.length === 0) {
+    galeriaDiv.innerHTML = '<p style="text-align:center;">Sem imagens adicionais</p>';
+    return;
+  }
+
+  // cria UL com classe esperada pelo bxSlider
+  const ul = document.createElement('ul');
+  ul.className = 'bxslider';
+
+  // cria promessas para aguardar load das imagens
+  const promises = imagens.map(raw => {
+    return new Promise(resolve => {
+      const li = document.createElement('li');
+      const img = document.createElement('img');
+
+      const src = (raw && raw.startsWith && raw.startsWith('data:image')) ? raw : ('data:image/jpeg;base64,' + raw);
+      img.src = src;
+      img.alt = 'Foto da galeria';
+      img.onload = () => resolve();
+      img.onerror = () => resolve(); // resolve mesmo em erro para não travar
+
+      li.appendChild(img);
+      ul.appendChild(li);
+    });
+  });
+
+  galeriaDiv.appendChild(ul);
+
+  // Quando todas as imagens tiverem carregado, inicializa o slider
+  Promise.all(promises).then(() => {
+    window.bxGalleryInstance = $('.bxslider').bxSlider({
+      auto: true,
+      speed: 2000,
+      pause: 4000,
+      adaptiveHeight: true,
+      pager: true,
+      controls: true
+    });
+  });
+}
+
+/* ====== FUNÇÃO: baixa dados da pessoa e popula a página ====== */
+function baixaJsonInumado(vlCodigo) {
+  if (!vlCodigo) return;
+
   headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
 
-  // Fetch na API
-  fetch(url+'pessoa/'+vlCodigo, { method: 'GET', headers: headers })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error('Erro na API: ' + response.status);
-          }
-          return response.json();
-      })
-      .then(data => {
-          // Preencher os elementos HTML
-           data2    = new Date(data.nasci);
-           dataNasc = data2.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-           data2    = new Date(data.fales);
-           dataFale = data2.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-           document.getElementById('breveHistoria').innerText = data.texto;
-           document.getElementById('nomeFales').innerText = data.nome;
-           document.getElementById('nasci').innerText = '✨ ' +  dataNasc;
-           document.getElementById('fales').innerText = '✝️ ' + dataFale;
-           document.getElementById('historia').innerText = data.obs;
+  fetch(url + 'pessoa/' + vlCodigo, { method: 'GET', headers: headers })
+    .then(resp => {
+      if (!resp.ok) throw new Error('Erro na API: ' + resp.status + ' ' + resp.statusText);
+      return resp.json();
+    })
+    .then(data => {
+      // preenche campos
+      document.getElementById('breveHistoria').innerText = data.texto || '';
+      document.getElementById('nomeFales').innerText = data.nome || '';
+      document.getElementById('nasci').innerText = formatarData(data.nasci) ? ('✨ ' + formatarData(data.nasci)) : '';
+      document.getElementById('fales').innerText = formatarData(data.fales) ? ('✝️ ' + formatarData(data.fales)) : '';
+      document.getElementById('historia').value = data.obs || '';
 
+      // foto principal
+      const fotoEl = document.getElementById('foto');
+      if (data.foto) {
+        fotoEl.src = (data.foto.startsWith && data.foto.startsWith('data:image')) ? data.foto : ('data:image/jpeg;base64,' + data.foto);
+      } else {
+        fotoEl.removeAttribute('src');
+      }
 
-          // Se a foto vier com o prefixo correto
-          if (data.foto.startsWith('data:image')) {
-              document.getElementById('foto').src = data.foto;
-          } else {
-              // Caso venha só o base64 puro, adiciona o prefixo
-              document.getElementById('foto').src = 'data:image/jpeg;base64,' + data.foto;
-          }           
-      })
-      .catch(error => {
-          console.error('Erro ao buscar dados da API:', error);
-          alert('Erro ao carregar dados. Verifique a conexão com a API.');
-      });
+      // galeria: se a API já retornou data.galeria (array), usa ela
+      if (data.galeria && Array.isArray(data.galeria) && data.galeria.length > 0) {
+        criarGaleriaComBxSlider(data.galeria);
+      } else {
+        // senão, tenta buscar via endpoint /foto/{codigo} (mantendo compatibilidade)
+        baixaJsonFoto(vlCodigo);
+      }
+    })
+    .catch(err => {
+      console.error('Erro ao carregar dados pessoa:', err);
+      alert('Erro ao carregar dados. Verifique a conexão com a API.');
+    });
 }
-// ***********************************************************
-// ***********************************************************
-// BAIXA JSOM    F O T O 
-// ***********************************************************
-// *********************************************************** 
-function baixaJsonFoto(vlCodigo){
-   
-    headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
 
-    fetch(url+'foto/'+vlCodigo, { method: 'GET', headers: headers })
-        .then(response => {
-            if (!response.ok) {
-               console.log('Erro na API: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
+/* ====== FUNÇÃO: baixa fotos (endpoint alternativo) ====== */
+function baixaJsonFoto(vlCodigo) {
+  if (!vlCodigo) return;
 
-            const galeria = document.getElementById('galeria');
-            galeria.innerHTML = ''; // Limpa o conteúdo anterior
+  headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
 
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(item => {
-                    const img = document.createElement('img');
-                    img.src = 'data:image/jpeg;base64,' + item.foto;
-                    img.alt = 'Foto';
-                    img.classList.add('foto-galeria'); // Classe CSS para estilizar
-                    galeria.appendChild(img);
-                });
-            } else {
-                console.error('Nenhuma foto encontrada no JSON');
-                galeria.innerHTML = '<p>Nenhuma foto disponível.</p>';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados da API:', error);
-            alert('Erro ao carregar dados. Verifique a conexão com a API.');
+  fetch(url + 'foto/' + vlCodigo, { method: 'GET', headers: headers })
+    .then(resp => {
+      if (!resp.ok) {
+        // se não houver fotos via esse endpoint, apenas mostra mensagem
+        console.warn('Sem fotos pelo endpoint /foto/:', resp.status);
+        criarGaleriaComBxSlider([]); // fallback
+        return null;
+      }
+      return resp.json();
+    })
+    .then(data => {
+      if (!data) return;
+      // Assume que 'data' é um array de objetos com item.foto (base64)
+      if (Array.isArray(data) && data.length > 0) {
+        const arr = data.map(item => {
+          // se item.foto já vier com data:image..., deixa; senão converte
+          return (item.foto && item.foto.startsWith && item.foto.startsWith('data:image')) ? item.foto : ('data:image/jpeg;base64,' + item.foto);
         });
+        criarGaleriaComBxSlider(arr);
+      } else {
+        criarGaleriaComBxSlider([]);
+      }
+    })
+    .catch(err => {
+      console.error('Erro ao carregar fotos:', err);
+      criarGaleriaComBxSlider([]);
+    });
 }
 
+/* ====== comportamento da página ====== */
+document.addEventListener('DOMContentLoaded', function () {
+  // se veio com ?codigo=xxx no URL, baixa os dados
+  const params = new URLSearchParams(window.location.search);
+  const codigo = params.get('codigo');
 
-const audio = document.getElementById('musica');
-  
-  if (audio){           
-     
-    function liberarAudio() {
-         audio.play();
-    }   
-  }   
-
-
-if(pagina){    
-    var permitirAudio = document.querySelector('#permitir');
-    var negarAudio = document.querySelector('#negar');
-
-    permitirAudio.addEventListener('click', function (event) { 
-        const audio = document.getElementById('musica');
-        liberarAudio()
-        location.href='#close';  /*executa o fechar la do html */
-    });
-
-    negarAudio.addEventListener('click', function (event) { 
-        location.href='#close';  /*executa o fechar la do html */
-    });
-     // Abre automaticamente o modal de aviso
+  // abre modal de aviso (se for a página "quem-somos")
+  if (pagina && pagina.id === 'quem-somos') {
     location.hash = '#openModal';
-    
-    const parametros = new URLSearchParams(window.location.search);
-    const codigo = parametros.get('codigo');
+  }
+
+  if (codigo) {
     baixaJsonInumado(codigo);
-    baixaJsonFoto(codigo); 
-}
+  }
+
+  // botões do modal
+  const permitirBtn = document.getElementById('permitir');
+  const negarBtn = document.getElementById('negar');
+  if (permitirBtn) {
+    permitirBtn.addEventListener('click', function () {
+      const audio = document.getElementById('musica');
+      if (audio) audio.play().catch(() => {/* autoplay pode ser bloqueado */});
+      location.hash = '#close';
+    });
+  }
+  if (negarBtn) {
+    negarBtn.addEventListener('click', function () {
+      location.hash = '#close';
+    });
+  }
+
+  // seta src do audio se existir o codigo (opcional)
+  if (codigo) {
+    const tipo_codigo = codigo;
+    const audioEl = document.getElementById('musica');
+    if (audioEl) audioEl.src = "https://api.jarb.com.br/SONGS/song" + tipo_codigo + ".mp3";
+  }
+});
