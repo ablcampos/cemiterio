@@ -267,18 +267,18 @@ textarea{
 /************************************************************************************************************************************************/
 /***********************************************************************************************************************************************/
  /* RESPONSIVIDADE */
-  @media (max-width: 768px) {
+  @media (max-width: 617px) {
 
     .topo {
         height: 150px;
     }
     .logo img {
-        height: 60px;
+        height: 70px;
     }
     .top-image {
-        width: 200px;
-        height: 200px;
-        bottom: -80%;
+        width: 230px;
+        height: 230px;
+        bottom: -110%;
     }
     .container2 {
         padding-top: 30px;
@@ -289,7 +289,7 @@ textarea{
     }   
     
     #bt-margem {
-        margin-top: 150px;
+        margin-top: 180px;
     }
 }
 
@@ -309,9 +309,9 @@ textarea{
     }
 
     .top-image {
-        width: 120px;
-        height: 120px;
-        bottom: -30%;
+        width: 170px;
+        height: 170px;
+        bottom: -60%;
     }
     .container2 {
         padding-top: 30px;
@@ -322,7 +322,7 @@ textarea{
     }
 
     #bt-margem {
-        margin-top: 70px;
+        margin-top: 115px;
     }
 
 } 
