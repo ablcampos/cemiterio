@@ -1,93 +1,145 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jardim das Acácias</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jardim das Acácias - Homenagem</title>
 
-  <!-- Fontes e estilos -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style2.css">
+    <!-- fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lora:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- bxSlider CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-  
-</head>
-<body id="quem-somos">
+    <!-- estilo -->
+    <link rel="stylesheet" href="css/style2.css" />
+  </head>
 
-  <div class="topo">
-    <div class="logo"><img src="img/logo.png" alt="Logo"></div>
-    <img id="foto" alt="Foto Topo" class="top-image">
-  </div>
-  
-  <button id="bt-margem" class="btn btn-outline" onclick="document.getElementById('musica').play()">▶️ Tocar Música</button>
-  <!-- <audio id="musica" src="https://api.procampos.com.br/SONGS/song2.mp3" loop></audio> -->
-  <audio id="musica" loop></audio>
-  <button class="btn btn-outline2" onclick="document.getElementById('musica').pause()">⏹️ Parar Música</button>  
+  <body>
+    <header class="page-header">
+      <div class="container-header">
+        <h1 class="header-title"></h1>
+      </div>
+    </header>
 
-  <div id="openModal" class="modalDialog">
-    <div class="contatos">
-      <a href="#close" title="Fechar" class="close">X</a>
-      <h2>Atenção</h2>
-      <p>As configurações do seu navegador não permitem a <br><br>
-        execução de SOM ambiente, esta opção vem<br><br>
-        DESABILITADA, se desejar que uma música<br><br>
-        fique tocando ao fundo, clique no botão<br><br>
-        PERMITIR caso contrário clique em SAIR.<br><br>
-        A qualquer momento você pode<br><br>
-        INICIAR ou PARAR o som ambiente....
-      </p>
-      <br><br>
-      <br><br>      
-      
-      <button class="btn btn-outline" type="button" id="permitir">PERMITIR</button>
-      <button class="btn btn-outline2" type="button" id="negar">SAIR</button>
-    </div>
-  </div>
+    <main class="container">
+      <!-- Cabeçalho do perfil -->
+      <div class="profile-header">
+        <img
+          id="foto"
+          src="img/fototesteperfil.jpg"
+          alt="Foto Homenagem"
+          class="profile-picture"
+        />
+        <p class="in-memoriam">Em memória de</p>
+        <h1 id="nomeFales">Nome da Pessoa</h1>
 
-  <div class="container2">
-    <p>Em Memória de</p>
-    <p id="nomeFales"></p>
-
-    <div class="labels">
-      <div id="nasci" class="label"></div>
-      <div id="fales" class="label"></div>
-    </div>
-
-    <p id="breveHistoria"></p>
-
-    <div class="description">
-      <textarea id="historia" disabled></textarea>
-    </div>
-
-    <!-- galeria: será populada pelo JS -->
-    <div id="galeria"></div>
-  </div>
-
-  <footer class="footer">
-    <div class="container">
-
-        <div class="footer-text">
-            <span>Compartilhe nas Suas Redes Sociais</span>
+        <div class="dates">
+          <div class="date-item">
+            <span class="icon">★</span>
+            <span id="nasci" class="label"></span>
+          </div>
+          <div class="date-item">
+            <span class="icon">†</span>
+            <span id="fales" class="label"></span>
+          </div>
         </div>
 
-        
-        <div class="social">
-          <a href="#" onclick="share('whatsapp')"><img src="img/whatsapp.svg" alt=""></a>
-          <a href="#" onclick="share('instagram')"><img src="img/instagram.svg" alt=""></a>
-          <a href="#" onclick="share('twitter')"><img src="img/twitter.svg" alt=""></a>
+        <p id="breveHistoria" class="quote-text"></p>
       </div>
 
+      <!-- Navegação das abas -->
+      <nav class="tribute-tabs">
+        <button class="tab-link active" data-tab="historia">História</button>
+        <button class="tab-link" data-tab="galeria">Memórias</button>
+      </nav>
+
+      <!-- Conteúdo das abas -->
+      <div class="tab-content-wrapper">
+        <!-- Aba História -->
+        <div id="historia" class="tab-content active">
+          <div class="story">
+            <h2>Nossa Homenagem</h2>
+            <div id="historia-texto" class="description-text">
+              <p>
+                Texto de exemplo: Aqui será exibida a história e homenagem da
+                pessoa.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aba Memórias -->
+        <div id="galeria" class="tab-content">
+          <div class="gallery-section">
+            <h2>Galeria de Memórias</h2>
+            <div class="gallery-grid" id="galeria-grid">
+              <img src="img/fototeste.jpg" alt="Foto 1" />
+              <img src="img/fototeste1.jpg" alt="Foto 2" />
+              <img src="img/fototeste2.jpg" alt="Foto 3" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Controles de áudio -->
+    <div class="audio-controls">
+      <audio id="musica" src="audio/Sons.mp3" loop></audio>
+      <button
+        class="btn-audio"
+        onclick="document.getElementById('musica').play()"
+        aria-label="Tocar Música"
+      >
+        ▶️ Tocar
+      </button>
+      <button
+        class="btn-audio"
+        onclick="document.getElementById('musica').pause()"
+        aria-label="Parar Música"
+      >
+        ⏹️ Parar
+      </button>
     </div>
-</footer>
 
-  <!-- SCRIPTS (jQuery e bxSlider antes do script.js) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <!-- Modal inicial -->
+    <div id="openModal" class="modalDialog">
+      <div class="modal-content">
+        <a href="#close" title="Close" class="close">X</a>
+        <h2>Atenção</h2>
+        <p>
+          Este memorial possui uma trilha sonora ambiente. <br />
+          Se desejar ouvi-la, clique em "Permitir". <br />
+          Você poderá controlar a música a qualquer momento.
+        </p>
+        <div class="modal-buttons">
+          <button class="btn-modal-primary" type="submit" id="permitir">
+            PERMITIR
+          </button>
+          <a href="#close" class="btn-modal-secondary" id="negar">SAIR</a>
+        </div>
+      </div>
+    </div>
 
-  <!-- seu script -->
-  <script src="js/script.js"></script>
-</body>
+    <script src="js/script.js"></script>
+
+    <script>
+      // sistema de abas
+      const tabs = document.querySelectorAll(".tab-link");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((item) => item.classList.remove("active"));
+          contents.forEach((item) => item.classList.remove("active"));
+
+          tab.classList.add("active");
+          const targetContent = document.getElementById(tab.dataset.tab);
+          targetContent.classList.add("active");
+        });
+      });
+    </script>
+  </body>
 </html>

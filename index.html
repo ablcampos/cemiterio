@@ -1,145 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="descrition" content="Jardim das Acácias" />
+    <title>Jardim das Acácias - Paz e Beleza em um só lugar</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="descrition" content="Jardim das Acácias">
-    <title>Jardim das Acácias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lora:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  
-<!--SLIDE DA PAGINA -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
 
-    <script>
-          $(document).ready(function(){
-        $(".slider").bxSlider({                       
-            auto: true,            
-            speed : 2000,
-            pause: 4000
-        });
-      });      
-    </script>
-<!-- TERMINO DO SLIDE -->
-   
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-</head>
-
-<body id="inicial">
-
+  <body id="inicial">
     <header class="header">
-        <div class="container">
+      <div class="container">
+        <a href="index.html" class="logo">
+          <img src="img/logo.png" alt="logotipo Jardim das Acácias" />
+        </a>
 
-            <div class="logo">
-                <img src="img/logo.png" alt="logotipo">
-            </div>
-          
-            <nav class="menu">
-                <div class="text">
-                     <p id="pesquisa">Pesquisar</p>
-                </div>
-                
-                <form id="formulario">                    
-                    <input list="listaPessoas" id="pessoas" name="pessoas"
-                     onkeydown="abrirPagina(event)">
-                </form>
-                
-                <datalist id="listaPessoas">
-                  <!-- As opções serão preenchidas pelo JavaScript -->
-                </datalist>             
-
-                <button class="btn"  id="myButton">Pesquisar</button>                    
-    
-            </nav>
-
-        </div>
+        <nav class="menu">
+          <div class="search-container">
+            <p id="pesquisa">Encontre um ente querido:</p>
+            <form id="formulario">
+              <input
+                list="listaPessoas"
+                id="pessoas"
+                name="pessoas"
+                placeholder="Digite o nome"
+                onkeydown="abrirPagina(event)"
+              />
+              <datalist id="listaPessoas"> </datalist>
+              <button class="btn" id="myButton" type="button">Pesquisar</button>
+            </form>
+          </div>
+        </nav>
+      </div>
     </header>
 
+    <main>
+      <section class="hero-section">
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <div
+              class="swiper-slide"
+              style="background-image: url('img/fundo.avif')"
+            >
+              <div class="slide-content">
+                <h1>Paz e Beleza em um só lugar!</h1>
+                <p>Um refúgio de serenidade para honrar memórias.</p>
+              </div>
+            </div>
+            <div
+              class="swiper-slide"
+              style="background-image: url('img/bg-2.jpg')"
+            >
+      </section>
 
-    <div class="container">
-        <div class="slider" id="id-ini">
-        
-             <section class="hero-section bg-1">
-                 <div class="container2">
-                     <h1>Paz e Beleza em um só lugar !</h1>                
-                 </div>                
-             </section>
- 
-             <section class="hero-section bg-2">
-                 <div class="container2">
-                     <h1>O meio ambiente é parte fundamental !</h1>                
-                 </div>
-             </section>
- 
-             <section class="hero-section bg-3">
-                 <div class="container2">
-                     <h1>Nossa Sede com todo Conforto !</h1>                
-                 </div>
-             </section>
- 
-             <section class="hero-section bg-4">
-                 <div class="container2">
-                     <h1>Amplo parque com toda segurança !</h1>                
-                 </div>
-             </section>
-             <section class="hero-section bg-5">
-                 <div class="container2">
-                     <h1>Cemitério parque Jardim das Acácias !</h1>                
-                 </div>
-             </section>
-         
-        </div>
-    </div> 
-  
-    
-    <footer class="footer">
+      <section class="welcome-section">
         <div class="container">
-
-            <div class="footer-text">
-                <span>Cemitério Parque Jardim das Acácias...</span>
-            </div>
-
-            <div class="social">
-                <a href="#"><img src="img/whatsapp.svg" alt=""></a>
-                <a href="#"><img src="img/instagram.svg" alt=""></a>
-                <a href="#"><img src="img/twitter.svg" alt=""></a>
-            </div>
-
+          <h2>Acolhimento e Respeito em Cada Detalhe</h2>
+          <p>
+            O Cemitério Parque Jardim das Acácias foi concebido para ser um
+            local de paz, reflexão e homenagem. Nossa missão é oferecer um
+            ambiente acolhedor e uma infraestrutura completa para que as
+            famílias possam prestar suas últimas homenagens com a dignidade e o
+            respeito que o momento exige.
+          </p>
         </div>
+      </section>
+
+      <section class="services-section">
+        <div class="container">
+          <h2 class="section-title">Nossos Serviços</h2>
+          <div class="services-grid">
+            <div class="service-card">
+              <img src="img/jazigo4.jpg" alt="Ícone Jazigos" />
+              <h3>Jazigos e Lóculos</h3>
+              <p>
+                Opções perpétuas e temporárias em um ambiente de paz e com
+                manutenção constante.
+              </p>
+            </div>
+            <div class="service-card">
+              <img src="img/velorio3.jpg" alt="Ícone Velório" />
+              <h3>Salas de Velório</h3>
+              <p>
+                Espaços climatizados e confortáveis para a despedida e o
+                acolhimento de familiares e amigos.
+              </p>
+            </div>
+            <div class="service-card">
+              <img src="img/jardim.jpg" alt="Ícone Jardins" />
+              <h3>Manutenção e Paisagismo</h3>
+              <p>
+                Cuidado contínuo com nossos jardins para garantir um ambiente
+                sempre belo e sereno.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-text">
+            <h3>Cemitério Parque Jardim das Acácias</h3>
+            <p>Av. da Saudade, 123 - Bairro da Paz, Cidade, Estado</p>
+            <p>Contato: (99) 1234-5678</p>
+            <span>Um lugar de memória, um legado de paz...</span>
+          </div>
+          <div class="social">
+            <a href="#" aria-label="WhatsApp"
+              ><img src="img/whatsapp.svg" alt="WhatsApp"
+            /></a>
+            <a href="#" aria-label="Instagram"
+              ><img src="img/instagram.svg" alt="Instagram"
+            /></a>
+            <a href="#" aria-label="Twitter"
+              ><img src="img/twitter.svg" alt="Twitter"
+            /></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Jardim das Acácias. Todos os direitos reservados.</p>
+        </div>
+      </div>
     </footer>
-  
-      
+
     <script src="js/script.js"></script>
-    
-    <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- Initialize Swiper -->
-    <script>
-       var swiper = new Swiper(".mySwiper", {
-           loop:true,
-           autoplay: {
-                 delay: 2500,
-                 
-                 disableOnInteraction: false,
-                 pauseOnMouseEnter:true
-                 
-            },
-           navigation: {
-               nextEl: ".swiper-button-next",
-               prevEl: ".swiper-button-prev",
-        },
-       
-    });
-
-
     </script>
-</body>
+  </body>
 </html>
