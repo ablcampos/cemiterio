@@ -5,26 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jardim das Acácias - Homenagem</title>
 
-    <!-- fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lora:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
-    <!-- estilo -->
     <link rel="stylesheet" href="css/style2.css" />
   </head>
 
   <body>
-    <header class="page-header">
-      <div class="container-header">
-        <h1 class="header-title"></h1>
-      </div>
-    </header>
+    <header class="page-header"></header>
 
     <main class="container">
+      <!-- Banner de fundo -->
+      <section class="hero-banner">
+        <img
+          id="fotoFundo"
+          src="img/.jpg"
+          alt="Foto de fundo da homenagem"
+          class="hero-image"
+        />
+      </section>
+
       <!-- Cabeçalho do perfil -->
       <div class="profile-header">
         <img
@@ -47,18 +50,20 @@
           </div>
         </div>
 
-        <p id="breveHistoria" class="quote-text"></p>
+        <p id="fraseHomenagem" class="tribute-phrase">
+          “Aqui vai uma frase de homenagem...”
+        </p>
       </div>
 
       <!-- Navegação das abas -->
       <nav class="tribute-tabs">
         <button class="tab-link active" data-tab="historia">História</button>
         <button class="tab-link" data-tab="galeria">Memórias</button>
+        <button class="tab-link" data-tab="videos">Vídeos</button>
       </nav>
 
       <!-- Conteúdo das abas -->
       <div class="tab-content-wrapper">
-        <!-- Aba História -->
         <div id="historia" class="tab-content active">
           <div class="story">
             <h2>Nossa Homenagem</h2>
@@ -68,10 +73,27 @@
                 pessoa.
               </p>
             </div>
+
+            <div class="audio-controls">
+              <audio id="musica" src="audio/Sons.mp3" loop></audio>
+              <button
+                class="btn-audio"
+                onclick="document.getElementById('musica').play()"
+                aria-label="Tocar Música"
+              >
+                ▶️ Tocar
+              </button>
+              <button
+                class="btn-audio"
+                onclick="document.getElementById('musica').pause()"
+                aria-label="Parar Música"
+              >
+                ⏹️ Parar
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Aba Memórias -->
         <div id="galeria" class="tab-content">
           <div class="gallery-section">
             <h2>Galeria de Memórias</h2>
@@ -82,27 +104,20 @@
             </div>
           </div>
         </div>
+
+        <div id="videos" class="tab-content">
+          <div class="video-section">
+            <h2>Vídeos</h2>
+            <div class="video-grid" id="video-grid">
+              <video controls>
+                <source src="videos/video1.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeos.
+              </video>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
-
-    <!-- Controles de áudio -->
-    <div class="audio-controls">
-      <audio id="musica" src="audio/Sons.mp3" loop></audio>
-      <button
-        class="btn-audio"
-        onclick="document.getElementById('musica').play()"
-        aria-label="Tocar Música"
-      >
-        ▶️ Tocar
-      </button>
-      <button
-        class="btn-audio"
-        onclick="document.getElementById('musica').pause()"
-        aria-label="Parar Música"
-      >
-        ⏹️ Parar
-      </button>
-    </div>
 
     <!-- Modal inicial -->
     <div id="openModal" class="modalDialog">
@@ -124,9 +139,8 @@
     </div>
 
     <script src="js/script.js"></script>
-
     <script>
-      // sistema de abas
+      // Sistema de abas
       const tabs = document.querySelectorAll(".tab-link");
       const contents = document.querySelectorAll(".tab-content");
 
