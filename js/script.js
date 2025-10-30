@@ -1,4 +1,4 @@
-const url = 'http://213.218.234.164:9000/';
+const url = 'http://142.4.193.48:9000/';
 const username = '12345';
 const password = '12345';
 const headers = new Headers();// Montar cabeçalho de autenticação
