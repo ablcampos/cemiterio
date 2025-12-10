@@ -14,7 +14,17 @@
     <link rel="stylesheet" href="css/style2.css" />
   </head>
 
-  <body>
+  <body id="quem-somos">   
+        
+    <!-- <script>
+      // Pega os parâmetros da URL
+      const params = new URLSearchParams(window.location.search);
+      const tipo_codigo = params.get("codigo");      
+      // Monta o caminho da música dinamicamente
+      console.log(tipo_codigo);
+      document.getElementById("musica").src = "http://localhost:9000/SONGS/song" + tipo_codigo + ".mp3";
+    </script>      -->
+
     <header class="page-header"></header>
 
     <main class="container">
@@ -23,7 +33,7 @@
         <img
           id="fotoFundo"
           src="img/.jpg"
-          alt="Foto de fundo da homenagem"
+          alt=" "
           class="hero-image"
         />
       </section>
@@ -75,7 +85,8 @@
             </div>
 
             <div class="audio-controls">
-              <audio id="musica" src="audio/Sons.mp3" loop></audio>
+              <!-- <audio id="musica" src="audio/Sons.mp3" loop></audio> -->
+              <audio id="musica" loop></audio> 
               <button
                 class="btn-audio"
                 onclick="document.getElementById('musica').play()"
@@ -98,9 +109,9 @@
           <div class="gallery-section">
             <h2>Galeria de Memórias</h2>
             <div class="gallery-grid" id="galeria-grid">
-              <img src="img/fototeste.jpg" alt="Foto 1" />
+              <!-- <img src="img/fototeste.jpg" alt="Foto 1" />
               <img src="img/fototeste1.jpg" alt="Foto 2" />
-              <img src="img/fototeste2.jpg" alt="Foto 3" />
+              <img src="img/fototeste2.jpg" alt="Foto 3" /> -->
             </div>
           </div>
         </div>

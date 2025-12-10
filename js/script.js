@@ -1,230 +1,220 @@
-const url = 'http://142.4.193.48:9000/';
+// ===========================================================
+// CONFIGURAÇÕES GERAIS
+// ===========================================================
+// const url = 'http://localhost:9000/';
+//const url = 'https://api.procampos.com.br/';
+const url = 'https://api.jarb.com.br/'
+
 const username = '12345';
 const password = '12345';
-const headers = new Headers();// Montar cabeçalho de autenticação
+const headers = new Headers();
 const pagina = document.getElementById('quem-somos');
 const pagina1 = document.getElementById('inicial');
 
-if (pagina1){           
-    const botao = document.getElementById('myButton');
-    botao.addEventListener('click', () => {
-      abrirPagina('Enter');  
-    });
-}  
+// ===========================================================
+// PÁGINA INICIAL - AUTO COMPLETE DE PESSOAS
+// ===========================================================
+if (pagina1) {
+  const botao = document.getElementById('myButton');
+  const input = document.getElementById('pessoas');
+  const datalist = document.getElementById('listaPessoas');
 
-window.onload = function() {
-   
-    if (pagina1){           
-        const datalist = document.getElementById('listaPessoas');
-        const input = document.getElementById('pessoas');
-        datalist.innerHTML = ''; // Limpa as opções
-        input.value = '';        // Limpa o campo de input
-    }  
-};
+  botao.addEventListener('click', () => abrirPagina('Enter'));
 
-function limparDatalist() {  
-    document.getElementById('listaPessoas').innerHTML = '';
+  window.onload = function () {
+    datalist.innerHTML = '';
+    input.value = '';
+  };
+
+  input.addEventListener('input', (event) => {
+    const valor = event.target.value.trim();
+    if (valor.length > 3) {
+      carregarPessoas(valor);
+    } else {
+      limparDatalist();
+    }
+  });
+}
+
+function limparDatalist() {
+  const datalist = document.getElementById('listaPessoas');
+  if (datalist) datalist.innerHTML = '';
 }
 
 function abrirPagina(event) {
-    
-    if (event.key === "Enter" || event === "Enter") {         
+  if (event.key === "Enter" || event === "Enter") {
+   
+    const entrada = document.getElementById('pessoas').value;
+    const opcoes = document.querySelectorAll('#listaPessoas option');
+    let destino = '';
 
-        const entrada = document.getElementById('pessoas').value;
-        const opcoes = document.querySelectorAll('#listaPessoas option');
-
-        let url = '';
-
-        opcoes.forEach(opcao => {
-            if (opcao.value === entrada) {
-                url = opcao.getAttribute('data-url');
-            }
-        });
-        
-        if (url) {
-            window.open(url, '_blank');
-            document.getElementById('formulario').reset();
-
-            // Limpa o datalist após abrir a página
-            document.getElementById('listaPessoas').innerHTML = '';
-        } else {
-            alert('Opção não encontrada!');
-        }
-    }
-}
-
-const input = document.getElementById('pessoas');
-    
-async function carregarPessoas(filtro) {      
-      const url2 = url+`pessoa?nome=${encodeURIComponent(filtro)}`;
-
-      headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
-
-      try {
-        const response = await fetch(url2, { headers });
-
-        if (!response.ok) {
-          throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-        }
-
-        const dados = await response.json();
-
-        const datalist = document.getElementById('listaPessoas');
-        datalist.innerHTML = ''; // Limpa qualquer dado anterior 
-
-        dados.forEach(pessoa => {
-          var option = document.createElement('option');
-          option.value = `${pessoa.idcli} - ${pessoa.nome}`;
-          option.setAttribute('data-url', "inumado.html?codigo="+ `${pessoa.idcli}`);
-          datalist.appendChild(option);                        
-        });
-
-      } catch (erro) {
-        console.error('Erro ao carregar pessoas:', erro);
+    opcoes.forEach(opcao => {
+      if (opcao.value === entrada) {
+        destino = opcao.getAttribute('data-url');
       }
+    });
+
+    if (destino) {
+      window.open(destino, '_blank');
+      document.getElementById('formulario').reset();
+      limparDatalist();
+    } else {
+      alert('Opção não encontrada!');
+    }
+  }
 }
+
+async function carregarPessoas(filtro) {
+  const url2 = url + `pessoa/procura/${encodeURIComponent(filtro)}/S`;
+  headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
+  
+  try {
+    const response = await fetch(url2, { headers });
+    if (!response.ok) throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+
+    const dados = await response.json();
+    const datalist = document.getElementById('listaPessoas');
+    datalist.innerHTML = '';
         
-    if (pagina1){   
-        input.addEventListener('input', (event) => {
-          const valor = event.target.value.trim();
-          if (valor.length > 3) {
-              carregarPessoas(valor);
-          } else {
-            limparDatalist();
-          }
-        });      
-      }    
+    dados.forEach(pessoa => {      
+      const option = document.createElement('option');
+      option.value = `${pessoa.idcli} - ${pessoa.nome}`;
+      option.setAttribute('data-url', `inumado.html?codigo=${pessoa.idcli}`);
+      datalist.appendChild(option);
+    });
+  } catch (erro) {
+    console.error('Erro ao carregar pessoas:', erro);
+  }
+}
 
-//************************************************************************************************************************************** */      
-// SCRIPT PARA QUEM SOMOS APENAS *****************************************************************************************************
-//************************************************************************************************************************************** */      
-
-// Executa a função quando o DOM estiver completamente carregado
+// ===========================================================
+// PÁGINA "QUEM SOMOS" - HOMENAGEM
+// ===========================================================
 document.addEventListener('DOMContentLoaded', funcaoInicial);
- 
 
 function funcaoInicial() {
-    
-      if (pagina){           
-          if (pagina.getAttribute('id')==='quem-somos') {
-            location.hash = '#openModal';                
-          } 
-      }
+  if (pagina && pagina.getAttribute('id') === 'quem-somos') {
+    location.hash = '#openModal';
+  }
 }
-// ***********************************************************
-// ***********************************************************
-// BAIXA JSOM INUMADO
-// ***********************************************************
-// ***********************************************************   
-function baixaJsonInumado(vlCodigo){
- 
+
+// ===========================================================
+// BAIXA JSON INUMADO
+// ===========================================================
+function baixaJsonInumado(vlCodigo) {
+  headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
+  fetch(url + 'pessoa/' + vlCodigo, { method: 'GET', headers })
+    .then(response => {
+      if (!response.ok) throw new Error('Erro na API: ' + response.status);
+      return response.json();
+    })
+    .then(data => {
+      const dataNasc = new Date(data.nasci).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+      const dataFale = new Date(data.fales).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+      document.getElementById('fraseHomenagem').innerText = data.texto;
+      document.getElementById('nomeFales').innerText = data.nome;
+      document.getElementById('nasci').innerText = dataNasc;
+      document.getElementById('fales').innerText = dataFale;
+      document.getElementById('historia-texto').innerText = data.obs;
+
+      const foto = document.getElementById('foto');
+      if (data.foto.startsWith('data:image')) {
+        foto.src = data.foto;
+      } else {
+        foto.src = 'data:image/jpeg;base64,' + data.foto;
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao buscar dados da API:', error);
+      alert('Erro ao carregar dados. Verifique a conexão com a API.');
+    });
+}
+
+// ===========================================================
+// BAIXA JSON DE FOTOS (GALERIA)
+// ===========================================================
+function baixaJsonFoto(vlCodigo) {
   headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
 
-  // Fetch na API
-  fetch(url+'pessoa/'+vlCodigo, { method: 'GET', headers: headers })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error('Erro na API: ' + response.status);
-          }
-          return response.json();
-      })
-      .then(data => {
-          // Preencher os elementos HTML
-           data2    = new Date(data.nasci);
-           dataNasc = data2.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-           data2    = new Date(data.fales);
-           dataFale = data2.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-          
-          document.getElementById('breveHistoria').innerText = data.texto;
-          document.getElementById('nomeFales').innerText = data.nome;
-          document.getElementById('nasci').innerText = '✨ ' +  dataNasc;
-          document.getElementById('fales').innerText = '✝️ ' + dataFale;
-          document.getElementById('historia').innerText = data.obs;
+  fetch(url + 'foto/' + vlCodigo, { method: 'GET', headers })
+    .then(response => {
+      if (!response.ok) throw new Error('Erro na API: ' + response.status);
+      return response.json();
+    })
+    .then(data => {
+      const galeria = document.getElementById('galeria-grid');
+      galeria.innerHTML = '';
 
-
-          // Se a foto vier com o prefixo correto
-          if (data.foto.startsWith('data:image')) {
-              document.getElementById('foto').src = data.foto;
-          } else {
-              // Caso venha só o base64 puro, adiciona o prefixo
-              document.getElementById('foto').src = 'data:image/jpeg;base64,' + data.foto;
-          }           
-      })
-      .catch(error => {
-          console.error('Erro ao buscar dados da API:', error);
-          alert('Erro ao carregar dados. Verifique a conexão com a API.');
-      });
-}
-// ***********************************************************
-// ***********************************************************
-// BAIXA JSOM    F O T O 
-// ***********************************************************
-// *********************************************************** 
-function baixaJsonFoto(vlCodigo){
-   
-    headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
-
-    fetch(url+'foto/'+vlCodigo, { method: 'GET', headers: headers })
-        .then(response => {
-            if (!response.ok) {
-               console.log('Erro na API: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-
-            const galeria = document.getElementById('galeria');
-            galeria.innerHTML = ''; // Limpa o conteúdo anterior
-
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(item => {
-                    const img = document.createElement('img');
-                    img.src = 'data:image/jpeg;base64,' + item.foto;
-                    img.alt = 'Foto';
-                    img.classList.add('foto-galeria'); // Classe CSS para estilizar
-                    galeria.appendChild(img);
-                });
-            } else {
-                console.error('Nenhuma foto encontrada no JSON');
-                galeria.innerHTML = '<p>Nenhuma foto disponível.</p>';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados da API:', error);
-            alert('Erro ao carregar dados. Verifique a conexão com a API.');
+      if (Array.isArray(data) && data.length > 0) {
+        data.forEach(item => {
+          const img = document.createElement('img');
+          img.src = 'data:image/jpeg;base64,' + item.foto;
+          img.alt = 'Foto';
+          img.classList.add('foto-galeria');
+          galeria.appendChild(img);
         });
+      } else {
+        galeria.innerHTML = '<p>Nenhuma foto disponível.</p>';
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao buscar fotos:', error);
+      alert('Erro ao carregar fotos. Verifique a conexão com a API.');
+    });
 }
 
+// ===========================================================
+// CONTROLE DO ÁUDIO
+// ===========================================================
+if (pagina) {
+  const audio = document.getElementById('musica');
+  const permitirAudio = document.querySelector('#permitir');
+  const negarAudio = document.querySelector('#negar');
+  const parametros = new URLSearchParams(window.location.search);
+  const codigo = parametros.get('codigo');
 
-const audio = document.getElementById('musica');
-  
-  if (audio){           
-     
-    function liberarAudio() {
-         audio.play();
-    }   
-  }   
+  // Define o caminho da música correta
+  if (audio && codigo) {
+    audio.src = url + 'SONGS/song' + codigo + '.mp3';
+      
+    console.log('🎵 Música carregada:', audio.src);
+  }
 
-
-if(pagina){    
-    var permitirAudio = document.querySelector('#permitir');
-    var negarAudio = document.querySelector('#negar');
-
-    permitirAudio.addEventListener('click', function (event) { 
-        const audio = document.getElementById('musica');
-        liberarAudio()
-        location.href='#close';  /*executa o fechar la do html */
+  // Botões do modal
+  if (permitirAudio) {
+    permitirAudio.addEventListener('click', function () {
+      audio.play().catch(err => console.warn('Erro ao tocar áudio:', err));
+      location.href = '#close';
     });
+  }
 
-    negarAudio.addEventListener('click', function (event) { 
-        location.href='#close';  /*executa o fechar la do html */
+  if (negarAudio) {
+    negarAudio.addEventListener('click', function () {
+      location.href = '#close';
     });
-     // Abre automaticamente o modal de aviso
-    location.hash = '#openModal';
-    
-    const parametros = new URLSearchParams(window.location.search);
-    const codigo = parametros.get('codigo');
+  }
+
+  // Botões "Tocar" e "Parar" dentro da página
+  const botaoTocar = document.querySelector('.btn-audio[aria-label="Tocar Música"]');
+  const botaoParar = document.querySelector('.btn-audio[aria-label="Parar Música"]');
+
+  if (botaoTocar) {
+    botaoTocar.addEventListener('click', () => {
+      audio.play().catch(err => console.warn('Erro ao tocar música:', err));
+    });
+  }
+
+  if (botaoParar) {
+    botaoParar.addEventListener('click', () => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
+
+  // Carrega os dados da pessoa e as fotos
+  if (codigo) {
     baixaJsonInumado(codigo);
-    baixaJsonFoto(codigo); 
+    baixaJsonFoto(codigo);
+  }
 }
