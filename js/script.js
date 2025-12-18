@@ -4,7 +4,7 @@
 // const url = 'http://localhost:9000/';
 //const url = 'https://api.procampos.com.br/';
 const url = 'https://api.jarb.com.br/'
-
+//const url = 'http://localhost:9000/';
 const username = '12345';
 const password = '12345';
 const headers = new Headers();
@@ -111,7 +111,7 @@ function baixaJsonInumado(vlCodigo) {
     .then(data => {
       const dataNasc = new Date(data.nasci).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
       const dataFale = new Date(data.fales).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-
+      console.log('aqui');
       document.getElementById('fraseHomenagem').innerText = data.texto;
       document.getElementById('nomeFales').innerText = data.nome;
       document.getElementById('nasci').innerText = dataNasc;
@@ -123,6 +123,13 @@ function baixaJsonInumado(vlCodigo) {
         foto.src = data.foto;
       } else {
         foto.src = 'data:image/jpeg;base64,' + data.foto;
+      }
+    
+      const fundo = document.getElementById('fundo');
+      if (data.fundo.startsWith('data:image')) {
+        fundo.src = data.fundo;
+      } else {
+        fundo.src = 'data:image/jpeg;base64,' + data.fundo;
       }
     })
     .catch(error => {
