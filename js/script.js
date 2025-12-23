@@ -4,7 +4,6 @@
 // const url = 'http://localhost:9000/';
 //const url = 'https://api.procampos.com.br/';
 const url = 'https://api.jarb.com.br/'
-//const url = 'http://localhost:9000/';
 const username = '12345';
 const password = '12345';
 const headers = new Headers();

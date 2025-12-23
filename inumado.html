@@ -16,36 +16,18 @@
 
   <body id="quem-somos">   
         
-    <!-- <script>
-      // Pega os parâmetros da URL
-      const params = new URLSearchParams(window.location.search);
-      const tipo_codigo = params.get("codigo");      
-      // Monta o caminho da música dinamicamente
-      console.log(tipo_codigo);
-      document.getElementById("musica").src = "http://localhost:9000/SONGS/song" + tipo_codigo + ".mp3";
-    </script>      -->
-
-    <header class="page-header"></header>
+     <header class="page-header"></header>
 
     <main class="container">
-      <!-- Banner de fundo -->
+    
       <section class="hero-banner">
-        <img
-          id="fundo"
-          src="img/.jpg"
-          alt=" "
-          class="hero-image"
-        />
-      </section>
-
+        <img  id="fundo"   src="img/.jpg"   alt=" " class="hero-image"/>       
+        <img id="foto"  src="img/fototesteperfil.jpg"   alt="Foto Homenagem"  class="profile-picture"/>
+      </section> 
+     
       <!-- Cabeçalho do perfil -->
       <div class="profile-header">
-        <img
-          id="foto"
-          src="img/fototesteperfil.jpg"
-          alt="Foto Homenagem"
-          class="profile-picture"
-        />
+        <!-- <img id="foto"  src="img/fototesteperfil.jpg"   alt="Foto Homenagem"  class="profile-picture"/> -->
         <p class="in-memoriam">Em memória de</p>
         <h1 id="nomeFales">Nome da Pessoa</h1>
 
