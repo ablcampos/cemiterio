@@ -1,7 +1,7 @@
 // ===========================================================
 // CONFIGURAÇÕES GERAIS
 // ===========================================================
-// const url = 'http://localhost:9000/';
+//const url = 'http://localhost:9000/';
 //const url = 'https://api.procampos.com.br/';
 const url = 'https://api.jarb.com.br/'
 const username = '12345';
@@ -118,6 +118,7 @@ function baixaJsonInumado(vlCodigo) {
       document.getElementById('historia-texto').innerText = data.obs;
 
       const foto = document.getElementById('foto');
+      foto.onload = () => foto.classList.remove('skeleton');
       if (data.foto.startsWith('data:image')) {
         foto.src = data.foto;
       } else {
@@ -125,6 +126,7 @@ function baixaJsonInumado(vlCodigo) {
       }
     
       const fundo = document.getElementById('fundo');
+      fundo.onload = () => fundo.classList.remove('skeleton');
       if (data.fundo.startsWith('data:image')) {
         fundo.src = data.fundo;
       } else {
@@ -142,6 +144,16 @@ function baixaJsonInumado(vlCodigo) {
 // ===========================================================
 function baixaJsonFoto(vlCodigo) {
   headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
+
+  const galeria = document.getElementById('galeria-grid');
+  if (galeria) {
+    galeria.innerHTML = `
+      <div class="foto-galeria skeleton"></div>
+      <div class="foto-galeria skeleton"></div>
+      <div class="foto-galeria skeleton"></div>
+      <div class="foto-galeria skeleton"></div>
+    `;
+  }
 
   fetch(url + 'foto/' + vlCodigo, { method: 'GET', headers })
     .then(response => {
@@ -171,7 +183,7 @@ function baixaJsonFoto(vlCodigo) {
 }
 
 // ===========================================================
-// CONTROLE DO ÁUDIO
+// CONTROLE DO ÁUDIO E VÍDEO
 // ===========================================================
 if (pagina) {
   const audio = document.getElementById('musica');
@@ -183,8 +195,28 @@ if (pagina) {
   // Define o caminho da música correta
   if (audio && codigo) {
     audio.src = url + 'SONGS/song' + codigo + '.mp3';
-      
     console.log('🎵 Música carregada:', audio.src);
+  }
+
+  // Carrega até 4 vídeos dinamicamente
+  const videoGrid = document.getElementById('video-grid');
+  if (videoGrid && codigo) {
+    videoGrid.innerHTML = ''; // limpa placeholders antigos
+    
+    for (let i = 1; i <= 4; i++) {
+      const videoUrl = url + `SONGS/video${codigo}-${i}.mp4`;
+      const videoElement = document.createElement('video');
+      videoElement.controls = true;
+      videoElement.classList.add('video-item');
+      
+      // Se não carregar o vídeo (ex: erro 404 porque a pessoa só tem 1 ou nenhum), remove do DOM
+      videoElement.onerror = () => {
+        videoElement.remove();
+      };
+      
+      videoElement.src = videoUrl;
+      videoGrid.appendChild(videoElement);
+    }
   }
 
   // Botões do modal

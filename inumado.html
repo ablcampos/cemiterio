@@ -21,13 +21,12 @@
     <main class="container">
     
       <section class="hero-banner">
-        <img  id="fundo"   src="img/.jpg"   alt=" " class="hero-image"/>       
-        <img id="foto"  src="img/fototesteperfil.jpg"   alt="Foto Homenagem"  class="profile-picture"/>
+        <img  id="fundo"   src=""   alt=" " class="hero-image skeleton"/>       
       </section> 
      
       <!-- Cabeçalho do perfil -->
       <div class="profile-header">
-        <!-- <img id="foto"  src="img/fototesteperfil.jpg"   alt="Foto Homenagem"  class="profile-picture"/> -->
+        <img id="foto"  src=""   alt="Foto Homenagem"  class="profile-picture skeleton"/>
         <p class="in-memoriam">Em memória de</p>
         <h1 id="nomeFales">Nome da Pessoa</h1>
 
@@ -102,10 +101,7 @@
           <div class="video-section">
             <h2>Vídeos</h2>
             <div class="video-grid" id="video-grid">
-              <video controls>
-                <source src="videos/video1.mp4" type="video/mp4" />
-                Seu navegador não suporta vídeos.
-              </video>
+              <!-- Vídeos carregados dinamicamente via JS -->
             </div>
           </div>
         </div>
@@ -145,6 +141,26 @@
           tab.classList.add("active");
           const targetContent = document.getElementById(tab.dataset.tab);
           targetContent.classList.add("active");
+
+          // Controle de reprodução do vídeo ao trocar de aba
+          const audioElement = document.getElementById("musica");
+          const videos = document.querySelectorAll(".video-item");
+
+          if (tab.dataset.tab === "videos") {
+            // Pausa a música de fundo para não misturar o áudio
+            if (audioElement && !audioElement.paused) {
+              audioElement.pause();
+            }
+            // Toca o primeiro vídeo se existir
+            if (videos.length > 0) {
+              videos[0].play().catch(err => console.warn("Erro ao tocar vídeo:", err));
+            }
+          } else {
+            // Se sair da aba de vídeos, pausa todos os vídeos
+            videos.forEach(v => {
+              if (!v.paused) v.pause();
+            });
+          }
         });
       });
     </script>
